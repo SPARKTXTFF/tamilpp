@@ -1,34 +1,34 @@
-## 💻 Copyable Code Examples
+# 🚀 TamilPP (தமிழ் நிரலாக்க மொழி)
 
-### 1. Basic Output
-```Tamilpp
-பதி("Hello World")
+![Python](https://img.shields.io/badge/Python-3.x-blue.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Status](https://img.shields.io/badge/Status-Active-success)
+
+**TamilPP** is a robust programming language that allows you to write Python code entirely in **Tamil**.
+
+It acts as a bridge, translating Tamil keywords into Python commands in real-time. This means you can use **Loops, Functions, Classes, Error Handling, and external PIP libraries** directly in Tamil!
+
+---
+
+## 📦 Installation (நிறுவுதல்)
+
+You can install TamilPP globally using pip:
+
+```bash
+pip install tamilpp
 ```
 
-### 2. Math Calculation
-```Tamilpp
-x = 10
-y = 20
+# Usages
+
+1. Variables & Math (அடிப்படை)
+'''Tamilpp
+# Variables define automatically
+x = 100
+y = 50
+
+# Calculation
 total = x + y
-பதி(f"Total: {total}")
-```
 
-### 3. User Input
-```Tamilpp
-name = உள்ளிடு("Your Name? ")
-பதி(f"Welcome {name}")
-```
-
-### 4. For Loop
-```Tamilpp
-# Loop 5 times
-சுற்று i இல் range(5):
-    பதி(i)
-```
-
-### 5. Using Libraries
-```Tamilpp
-இறக்குமதி math
-root = math.sqrt(25)
-பதி(root)
-```
+# Output using f-string
+பதி(f"The total is: {total}")
+'''
