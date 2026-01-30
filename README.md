@@ -66,7 +66,7 @@ battery = 3
 
 பதி("Shutdown.")
 ```
-#Functions (செயல்கள்)
+# Functions (செயல்கள்)
 ```Tamilpp
 # 1. Define function
 செயல் add_numbers(a, b):
@@ -111,3 +111,7 @@ my_dog.bark()
 பிழை Exception ஆக e:
     பதி(f"Error Caught: {e}")
 ```
+
+# Made By 
+[Youtube -> @sparktxt](https://www.youtube.com/@Sparktxt)
+[Instagram -> @agent--spark](https://www.instagram.com/agent__spark/)
