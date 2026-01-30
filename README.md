@@ -18,10 +18,8 @@ You can install TamilPP globally using pip:
 pip install tamilpp
 ```
 
-# Usages
-
 1. Variables & Math (அடிப்படை)
-'''Tamilpp
+```Tamilpp
 # Variables define automatically
 x = 100
 y = 50
@@ -31,4 +29,4 @@ total = x + y
 
 # Output using f-string
 பதி(f"The total is: {total}")
-'''
+```
