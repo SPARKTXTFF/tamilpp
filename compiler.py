@@ -1,9 +1,9 @@
 import sys
 import tokenize
-from io import BytesIO
 import importlib
+import re
+from io import BytesIO
 
-# CRITICAL FIX: Ensure Pyodide checks the current working directory for folders
 if '.' not in sys.path:
     sys.path.append('.')
 
@@ -14,7 +14,6 @@ class tamilppCompiler:
             module = importlib.import_module(f"dictionaries.{self.lang}_dic")
             self.translation_map = module.dictionary
         except Exception as e:
-            # CRITICAL FIX: Print the exact error to the terminal so we aren't guessing
             print(f"\033[31m⚠️ Dictionary Load Error for '{lang}': {e}\033[0m")
             self.translation_map = {}
 
@@ -32,4 +31,12 @@ class tamilppCompiler:
 
             new_tokens.append(tokenize.TokenInfo(token.type, translated, token.start, token.end, token.line))
 
-        return tokenize.untokenize(new_tokens).decode('utf-8')
+        # Rebuild the python code
+        python_code = tokenize.untokenize(new_tokens).decode('utf-8')
+
+        # === THE ASYNC FIX ===
+        # Finds 'input(' (even if there are spaces like 'input  (') and safely injects 'await '
+        python_code = re.sub(r'\binput\s*\(', 'await input(', python_code)
+        # =====================
+
+        return python_code
