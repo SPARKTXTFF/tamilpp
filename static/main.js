@@ -58,9 +58,15 @@ async function initEngine() {
             builtins.input = async_input
         `);
 
+        async function fetchUtf8(url) {
+            const response = await fetch(url);
+            const buffer = await response.arrayBuffer();
+            return new TextDecoder('utf-8').decode(buffer);
+        }
+
         // Fetch your core files from Vercel
-        const compilerCode = await (await fetch('/compiler.py')).text();
-        const tamilDic = await (await fetch('/dictionaries/tamil_dic.py')).text();
+        const compilerCode = await fetchUtf8('/compiler.py');
+        const tamilDic = await fetchUtf8('/dictionaries/tamil_dic.py');
         
         // Load them into the browser's Python environment
         pyodide.FS.writeFile('compiler.py', compilerCode);
