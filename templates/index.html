@@ -2,24 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Polyglot IDE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TamilPP IDE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="ide-container">
         <div class="panel editor-panel">
-            <div class="toolbar">
-                <div class="tab">main.tpp</div>
+            <div class="toolbar title-bar">
+                <h1>🐍 TamilPP IDE</h1>
                 <div class="controls">
                     <select id="langSelect">
                         <option value="tamil">Tamil / Tanglish</option>
                         <option value="hindi">Hindi</option>
                         <option value="telugu">Telugu</option>
                     </select>
-                    <button class="action-btn download-btn" onclick="downloadCode()">Share / Save</button>
+                </div>
+            </div>
+            <div class="toolbar action-bar">
+                <div class="tab">main.tpp</div>
+                <div class="controls">
+                    <button class="action-btn download-btn" onclick="downloadCode()">Save</button>
                     <button class="action-btn run-btn" onclick="runCode()">Run</button>
                 </div>
             </div>
