@@ -1,0 +1,115 @@
+/* Base Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: #1a1b26; /* Deep dark background */
+    color: #a9b1d6;
+    overflow: hidden; /* Prevent full page scroll */
+}
+
+/* Split Screen Container */
+.ide-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Individual Panels */
+.panel {
+    flex: 1; /* Both panels take up 50% */
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-panel {
+    border-right: 2px solid #16161e; /* Divider line */
+}
+
+/* Top Toolbar */
+.toolbar {
+    height: 45px;
+    background-color: #24283b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    border-bottom: 1px solid #16161e;
+}
+
+.tab {
+    font-size: 14px;
+    font-weight: 600;
+    color: #c0caf5;
+    background-color: #1a1b26;
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+/* Buttons and Controls */
+.controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+select {
+    background-color: #1a1b26;
+    color: #c0caf5;
+    border: 1px solid #414868;
+    padding: 6px 10px;
+    border-radius: 4px;
+    outline: none;
+}
+
+.action-btn {
+    border: none;
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.run-btn { background-color: #0d6efd; } /* Bright Blue Run Button */
+.run-btn:hover { background-color: #0b5ed7; }
+
+.download-btn { background-color: #414868; }
+.download-btn:hover { background-color: #545c7e; }
+
+.clear-btn { background-color: transparent; border: 1px solid #414868; color: #a9b1d6; }
+.clear-btn:hover { background-color: #414868; color: white; }
+
+/* Wrappers for Editor and Output to fill remaining space */
+.editor-wrapper, .output-wrapper {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+/* CodeMirror Overrides to fill container */
+.CodeMirror {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100% !important;
+    font-size: 15px;
+    font-family: 'Consolas', 'Courier New', monospace;
+}
+
+/* Terminal Output Area */
+#output {
+    margin: 0;
+    padding: 15px;
+    height: 100%;
+    box-sizing: border-box;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 15px;
+    color: #9ece6a; /* Terminal green text */
+    white-space: pre-wrap;
+    overflow-y: auto;
+}
