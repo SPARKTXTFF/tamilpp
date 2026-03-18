@@ -33,15 +33,3 @@ def api_compile():
     python_code = compiler.translate(code)
     
     return jsonify({'python_code': python_code})
-
-
-# =========================================================
-# 🚀 SERVER LAUNCHER
-# =========================================================
-
-if __name__ == "__main__":
-    print("🌐 Starting Polyglot Web IDE...")
-    print("👉 Open http://127.0.0.1:5000 in your browser.")
-    
-    # Runs the Flask web server
-    app.run(debug=True, host='127.0.0.1', port=5000)
