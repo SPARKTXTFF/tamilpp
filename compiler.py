@@ -31,15 +31,30 @@ class tamilppCompiler:
 
         return tokenize.untokenize(new_tokens).decode('utf-8')
 
-    def run(self, code):
+    def run(self, code, user_inputs=""):
         python_code = self.translate(code)
+        
         output_buffer = StringIO()
+        input_buffer = StringIO(user_inputs) # Load the inputs from the webpage
+        
+        # Save the original system streams so we don't break the server
+        original_stdout = sys.stdout
+        original_stdin = sys.stdin
+        
         try:
-            with contextlib.redirect_stdout(output_buffer):
-                exec(python_code, {})
+            # Redirect standard out and standard in to our buffers
+            sys.stdout = output_buffer
+            sys.stdin = input_buffer
+            
+            exec(python_code, {})
+            
             return output_buffer.getvalue()
         except Exception as e:
             return f"❌ Runtime Error: {e}"
+        finally:
+            # CRITICAL: Always restore the original streams!
+            sys.stdout = original_stdout
+            sys.stdin = original_stdin
 
     def compile(self, code, output_file):
         python_code = self.translate(code)
