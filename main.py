@@ -18,12 +18,12 @@ def docs():
 
 @app.route('/api/run', methods=['POST'])
 def api_run():
-    # Receives code from the web editor and runs it
     code = request.json.get('code', '')
     lang = request.json.get('lang', 'tamil')
+    user_inputs = request.json.get('inputs', '') # Grab the inputs
     
-    compiler = tamilppCompiler(lang)
-    output = compiler.run(code)
+    compiler = PolyglotCompiler(lang)
+    output = compiler.run(code, user_inputs) # Pass them to the run function
     
     return jsonify({'output': output})
 
