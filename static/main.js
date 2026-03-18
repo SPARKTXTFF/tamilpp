@@ -45,7 +45,7 @@ async function js_input(prompt_text) {
 }
 
 // =========================================================
-// 🧠 THE NATIVE PYTHON COMPILER (Embedded to fix Vercel UTF-8 bugs)
+// 🧠 THE NATIVE PYTHON COMPILER 
 // =========================================================
 const compilerPythonCode = `
 import tokenize
@@ -81,25 +81,42 @@ class TamilCompiler:
             'சரம்': 'str', 'str': 'str',
             'பட்டியல்': 'list', 'list': 'list'
         }
-        # Forces perfect Unicode matching
-        self.translation_map = {unicodedata.normalize('NFC', k): v for k, v in raw_dict.items()}
+        self.translation_map = {}
+        for k, v in raw_dict.items():
+            # 🔪 Kill invisible keyboard characters from dictionary keys
+            clean_k = re.sub(r'[\\u200b\\u200c\\u200d\\ufeff]', '', k)
+            self.translation_map[unicodedata.normalize('NFC', clean_k)] = v
 
     def translate(self, code):
+        # 🔪 Kill invisible keyboard characters from user code
+        code = re.sub(r'[\\u200b\\u200c\\u200d\\ufeff]', '', code)
+        
+        # Force perfectly standard Unicode blocks
         code = unicodedata.normalize('NFC', code)
+        
         tokens = list(tokenize.tokenize(BytesIO(code.encode('utf-8')).readline))
         new_tokens = []
+        
         for token in tokens:
             if token.string in ('அமை', 'amai', 'set'):
                 continue
             if token.type == tokenize.NAME:
-                translated = self.translation_map.get(token.string, self.translation_map.get(token.string.lower(), token.string))
+                exact_str = token.string
+                lower_str = token.string.lower()
+                if exact_str in self.translation_map:
+                    translated = self.translation_map[exact_str]
+                elif lower_str in self.translation_map:
+                    translated = self.translation_map[lower_str]
+                else:
+                    translated = exact_str
             else:
                 translated = token.string
+                
             new_tokens.append(tokenize.TokenInfo(token.type, translated, token.start, token.end, token.line))
 
         python_code = tokenize.untokenize(new_tokens).decode('utf-8')
         
-        # Injects 'await' so the terminal can pause for input
+        # Inject 'await' for the interactive terminal input
         python_code = re.sub(r'\\binput\\s*\\(', 'await input(', python_code)
         return python_code
 `;
@@ -114,7 +131,6 @@ async function initEngine() {
 
         pyodide.globals.set("js_input", js_input);
         
-        // Load the input handler and our embedded compiler
         await pyodide.runPythonAsync(`
 import builtins
 async def async_input(prompt=""):
