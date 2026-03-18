@@ -71,10 +71,10 @@ async function initEngine() {
         const compilerCode = await (await fetch('/compiler.py')).text();
         const tamilDic = await (await fetch('/dictionaries/tamil_dic.py')).text();
         
-        pyodide.FS.writeFile('/compiler.py', compilerCode);
-        pyodide.FS.mkdir('/dictionaries');
-        pyodide.FS.writeFile('/dictionaries/__init__.py', '');
-        pyodide.FS.writeFile('/dictionaries/tamil_dic.py', tamilDic);
+        pyodide.FS.writeFile('compiler.py', compilerCode);
+        pyodide.FS.mkdir('dictionaries');
+        pyodide.FS.writeFile('dictionaries/__init__.py', '');
+        pyodide.FS.writeFile('dictionaries/tamil_dic.py', tamilDic);
 
         term.writeln('\x1b[32m✅ Engine Ready! You can now run code.\x1b[0m\r\n');
         
