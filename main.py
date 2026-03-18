@@ -22,7 +22,7 @@ def api_run():
     lang = request.json.get('lang', 'tamil')
     user_inputs = request.json.get('inputs', '') # Grab the inputs
     
-    compiler = PolyglotCompiler(lang)
+    compiler = tamilppCompiler(lang)
     output = compiler.run(code, user_inputs) # Pass them to the run function
     
     return jsonify({'output': output})
