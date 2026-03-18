@@ -158,3 +158,35 @@ select {
         padding: 6px 12px;
     }
 }
+
+/* Styling for the new Input Area */
+.input-wrapper {
+    height: 120px; /* Fixed height for inputs */
+    background-color: #1a1b26;
+}
+
+#customInput {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    color: #c0caf5;
+    padding: 15px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 14px;
+    box-sizing: border-box;
+    resize: none;
+    outline: none;
+}
+
+#customInput::placeholder {
+    color: #414868;
+}
+
+/* Adjust Output Wrapper to share space with Input Wrapper */
+.output-wrapper {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    height: calc(100% - 165px); /* Leaves room for input box */
+}
