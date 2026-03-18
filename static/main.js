@@ -11,7 +11,7 @@ setTimeout(() => editor.refresh(), 100);
 async function runCode() {
     const code = editor.getValue();
     const lang = document.getElementById("langSelect").value;
-    const userInputs = document.getElementById("customInput").value; // Get the inputs
+    const userInputs = document.getElementById("codeEditor").value; // Get the inputs
     
     const outputElement = document.getElementById('output');
     outputElement.innerText = "Running...";
