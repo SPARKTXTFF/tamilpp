@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template
-from compiler import tamilppCompiler
+from compiler import PolyglotCompiler
+import traceback
 
 app = Flask(__name__)
 
@@ -13,21 +14,37 @@ def docs():
 
 @app.route('/api/run', methods=['POST'])
 def api_run():
-    code = request.json.get('code', '')
-    lang = request.json.get('lang', 'tamil')
-    user_inputs = request.json.get('inputs', '') # Grab inputs from web
-    
-    compiler = PolyglotCompiler(lang)
-    output = compiler.run(code, user_inputs)
-    
-    return jsonify({'output': output})
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'output': "❌ Error: No data received from editor."})
+            
+        code = data.get('code', '')
+        lang = data.get('lang', 'tamil')
+        user_inputs = data.get('inputs', '')
+        
+        compiler = PolyglotCompiler(lang)
+        output = compiler.run(code, user_inputs)
+        
+        return jsonify({'output': output})
+    except Exception as e:
+        # Traps 500 errors and sends them to the frontend terminal
+        error_details = traceback.format_exc()
+        return jsonify({'output': f"❌ Severe Backend Server Error:\n{error_details}"})
 
 @app.route('/api/compile', methods=['POST'])
 def api_compile():
-    code = request.json.get('code', '')
-    lang = request.json.get('lang', 'tamil')
-    
-    compiler = tamilppCompiler(lang)
-    python_code = compiler.translate(code)
-    
-    return jsonify({'python_code': python_code})
+    try:
+        data = request.get_json()
+        code = data.get('code', '')
+        lang = data.get('lang', 'tamil')
+        
+        compiler = PolyglotCompiler(lang)
+        python_code = compiler.translate(code)
+        
+        return jsonify({'python_code': python_code})
+    except Exception as e:
+        return jsonify({'python_code': f"# Compiler Error: {e}"})
+
+if __name__ == "__main__":
+    app.run(debug=True, host='127.0.0.1', port=5000)
