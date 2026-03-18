@@ -6,44 +6,52 @@
     <title>TamilPP IDE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="ide-container">
         <div class="panel editor-panel">
             <div class="toolbar title-bar">
-                <h1>🐍 TamilPP IDE</h1>
-                <a href="/docs" target="_blank" class="action-btn" style="background-color: #414868; text-decoration: none; font-size: 13px;">📖 Docs</a>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <h1>🐍 TamilPP IDE</h1>
+                    <a href="/docs" target="_blank" class="action-btn" style="background-color: #414868; text-decoration: none; font-size: 13px;">📖 Docs</a>
+                </div>
                 <div class="controls">
                     <select id="langSelect">
                         <option value="tamil">Tamil / Tanglish</option>
                         <option value="hindi">Hindi</option>
-                        <option value="telugu">Telugu</option>
                     </select>
                 </div>
             </div>
             <div class="toolbar action-bar">
                 <div class="tab">main.tpp</div>
                 <div class="controls">
-                    <button class="action-btn download-btn" onclick="downloadCode()">Save</button>
+                    <button class="action-btn download-btn" onclick="downloadCode()">Save .py</button>
                     <button class="action-btn run-btn" onclick="runCode()">Run</button>
                 </div>
             </div>
             <div class="editor-wrapper">
-                <textarea id="codeEditor"># உங்கள் குறிமுறையை இங்கே எழுதவும்
-பதி("வணக்கம் உலகம்!")</textarea>
+                <textarea id="codeEditor">பயனர்_பெயர் = உள்ளிடு("உங்கள் பெயர் என்ன? ")
+பதி("வரவேற்கிறோம்", பயனர்_பெயர்)</textarea>
             </div>
         </div>
 
         <div class="panel output-panel">
             <div class="toolbar">
-                <div class="tab">Output</div>
+                <div class="tab">Terminal Output</div>
                 <div class="controls">
                     <button class="action-btn clear-btn" onclick="clearOutput()">Clear</button>
                 </div>
             </div>
             <div class="output-wrapper">
                 <pre id="output"></pre>
+            </div>
+            
+            <div class="toolbar" style="border-top: 2px solid #16161e;">
+                <div class="tab">Standard Input (Type answers here before running)</div>
+            </div>
+            <div class="input-wrapper">
+                <textarea id="customInput" placeholder="Enter inputs here. If your code has 2 'ullidu' statements, put each answer on a new line."></textarea>
             </div>
         </div>
     </div>
