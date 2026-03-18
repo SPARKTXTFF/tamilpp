@@ -3,13 +3,8 @@ from compiler import tamilppCompiler
 
 app = Flask(__name__)
 
-# =========================================================
-# 🌐 WEB ROUTES
-# =========================================================
-
 @app.route('/')
 def home():
-    # Serves the index.html from the templates/ folder
     return render_template('index.html')
 
 @app.route('/docs')
@@ -20,16 +15,15 @@ def docs():
 def api_run():
     code = request.json.get('code', '')
     lang = request.json.get('lang', 'tamil')
-    user_inputs = request.json.get('inputs', '') # Grab the inputs
+    user_inputs = request.json.get('inputs', '') # Grab inputs from web
     
-    compiler = tamilppCompiler(lang)
-    output = compiler.run(code, user_inputs) # Pass them to the run function
+    compiler = PolyglotCompiler(lang)
+    output = compiler.run(code, user_inputs)
     
     return jsonify({'output': output})
 
 @app.route('/api/compile', methods=['POST'])
 def api_compile():
-    # Translates the code and sends it back to the browser for download
     code = request.json.get('code', '')
     lang = request.json.get('lang', 'tamil')
     
