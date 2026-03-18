@@ -1,12 +1,12 @@
-/* Base Reset */
+/* Base Reset (Update your existing body tag slightly) */
 body, html {
     margin: 0;
     padding: 0;
     height: 100vh;
     font-family: 'Segoe UI', Tahoma, sans-serif;
-    background-color: #1a1b26; /* Deep dark background */
+    background-color: #1a1b26; 
     color: #a9b1d6;
-    overflow: hidden; /* Prevent full page scroll */
+    overflow: hidden; 
 }
 
 /* Split Screen Container */
@@ -14,28 +14,35 @@ body, html {
     display: flex;
     height: 100vh;
     width: 100vw;
+    flex-direction: row; /* Default to side-by-side on desktop */
 }
 
 /* Individual Panels */
 .panel {
-    flex: 1; /* Both panels take up 50% */
+    flex: 1; 
     display: flex;
     flex-direction: column;
 }
 
 .editor-panel {
-    border-right: 2px solid #16161e; /* Divider line */
+    border-right: 2px solid #16161e; 
 }
 
-/* Top Toolbar */
+/* Toolbars */
 .toolbar {
-    height: 45px;
+    min-height: 45px;
     background-color: #24283b;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;
+    padding: 5px 15px;
     border-bottom: 1px solid #16161e;
+}
+
+h1 {
+    margin: 0;
+    font-size: 20px;
+    color: #9ece6a; /* Theme matching green */
 }
 
 .tab {
@@ -61,6 +68,7 @@ select {
     padding: 6px 10px;
     border-radius: 4px;
     outline: none;
+    font-size: 14px;
 }
 
 .action-btn {
@@ -71,9 +79,10 @@ select {
     cursor: pointer;
     color: white;
     transition: background-color 0.2s;
+    font-size: 14px;
 }
 
-.run-btn { background-color: #0d6efd; } /* Bright Blue Run Button */
+.run-btn { background-color: #0d6efd; }
 .run-btn:hover { background-color: #0b5ed7; }
 
 .download-btn { background-color: #414868; }
@@ -82,14 +91,14 @@ select {
 .clear-btn { background-color: transparent; border: 1px solid #414868; color: #a9b1d6; }
 .clear-btn:hover { background-color: #414868; color: white; }
 
-/* Wrappers for Editor and Output to fill remaining space */
+/* Wrappers for Editor and Output */
 .editor-wrapper, .output-wrapper {
     flex: 1;
     position: relative;
     overflow: hidden;
 }
 
-/* CodeMirror Overrides to fill container */
+/* CodeMirror Overrides */
 .CodeMirror {
     position: absolute;
     top: 0;
@@ -109,7 +118,43 @@ select {
     box-sizing: border-box;
     font-family: 'Consolas', 'Courier New', monospace;
     font-size: 15px;
-    color: #9ece6a; /* Terminal green text */
+    color: #9ece6a;
     white-space: pre-wrap;
     overflow-y: auto;
+}
+
+/* =========================================================
+   📱 MOBILE RESPONSIVE LAYOUT
+   ========================================================= */
+@media screen and (max-width: 768px) {
+    .ide-container {
+        flex-direction: column; /* Stack top to bottom */
+    }
+
+    .panel {
+        flex: none; /* Disable equal stretching */
+    }
+
+    /* Give editor 60% height, output 40% on mobile */
+    .editor-panel {
+        height: 60vh;
+        border-right: none;
+        border-bottom: 3px solid #16161e;
+    }
+
+    .output-panel {
+        height: 40vh;
+    }
+
+    h1 {
+        font-size: 18px; /* Slightly smaller title */
+    }
+
+    .toolbar {
+        padding: 8px 10px;
+    }
+
+    .action-btn {
+        padding: 6px 12px;
+    }
 }
