@@ -11,26 +11,30 @@ setTimeout(() => editor.refresh(), 100);
 async function runCode() {
     const code = editor.getValue();
     const lang = document.getElementById("langSelect").value;
-    const outputElement = document.getElementById('output');
+    const userInputs = document.getElementById("customInput").value; // Get the inputs
     
+    const outputElement = document.getElementById('output');
     outputElement.innerText = "Running...";
-    outputElement.style.color = "#a9b1d6"; // Neutral color while loading
+    outputElement.style.color = "#a9b1d6";
     
     try {
         const response = await fetch('/api/run', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code: code, lang: lang })
+            body: JSON.stringify({ 
+                code: code, 
+                lang: lang,
+                inputs: userInputs // Send inputs to the server
+            })
         });
         const data = await response.json();
         
         outputElement.innerText = data.output;
         
-        // Make errors red, normal output green
         if(data.output.includes("❌ Runtime Error")) {
-            outputElement.style.color = "#f7768e"; // Red error
+            outputElement.style.color = "#f7768e";
         } else {
-            outputElement.style.color = "#9ece6a"; // Green success
+            outputElement.style.color = "#9ece6a";
         }
     } catch (error) {
         outputElement.innerText = "❌ Network Error: Could not connect to server.";
