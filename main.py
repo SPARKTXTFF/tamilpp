@@ -12,6 +12,10 @@ def home():
     # Serves the index.html from the templates/ folder
     return render_template('index.html')
 
+@app.route('/docs')
+def docs():
+    return render_template('docs.html')
+
 @app.route('/api/run', methods=['POST'])
 def api_run():
     # Receives code from the web editor and runs it
