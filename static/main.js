@@ -96,9 +96,9 @@ async function runCode() {
 
     try {
         await pyodide.runPythonAsync(`
-            from compiler import PolyglotCompiler
+            from compiler import tamilppCompiler
             try:
-                comp = PolyglotCompiler(selected_lang)
+                comp = tamilppCompiler(selected_lang)
                 python_code = comp.translate(user_code)
                 
                 exec_globals = {"__builtins__": __builtins__}
