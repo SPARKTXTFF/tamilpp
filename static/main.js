@@ -5,39 +5,40 @@ var editor = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
     indentUnit: 4
 });
 
-// Ensures the editor fills the flexbox container correctly
 setTimeout(() => editor.refresh(), 100);
 
 async function runCode() {
     const code = editor.getValue();
     const lang = document.getElementById("langSelect").value;
-    const userInputs = document.getElementById("codeEditor").value; // Get the inputs
-    
+    const userInputs = document.getElementById("customInput").value; // Grab inputs
     const outputElement = document.getElementById('output');
+    
     outputElement.innerText = "Running...";
-    outputElement.style.color = "#a9b1d6";
+    outputElement.style.color = "#a9b1d6"; 
     
     try {
         const response = await fetch('/api/run', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                code: code, 
-                lang: lang,
-                inputs: userInputs // Send inputs to the server
-            })
+            body: JSON.stringify({ code: code, lang: lang, inputs: userInputs })
         });
-        const data = await response.json();
         
+        // Catch server crashes (like 500 errors) before they break the JSON parser
+        if (!response.ok) {
+            throw new Error(`Server returned status: ${response.status}`);
+        }
+
+        const data = await response.json();
         outputElement.innerText = data.output;
         
         if(data.output.includes("❌ Runtime Error")) {
-            outputElement.style.color = "#f7768e";
+            outputElement.style.color = "#f7768e"; 
         } else {
-            outputElement.style.color = "#9ece6a";
+            outputElement.style.color = "#9ece6a"; 
         }
     } catch (error) {
-        outputElement.innerText = "❌ Network Error: Could not connect to server.";
+        console.error(error);
+        outputElement.innerText = `❌ Error: ${error.message}\nCheck if your vercel.json is correct or if the server crashed.`;
         outputElement.style.color = "#f7768e";
     }
 }
@@ -62,7 +63,6 @@ async function downloadCode() {
     window.URL.revokeObjectURL(url);
 }
 
-// New function for the clear button
 function clearOutput() {
     document.getElementById('output').innerText = "";
 }
