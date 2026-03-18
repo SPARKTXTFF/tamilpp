@@ -1,6 +1,11 @@
+import sys
 import tokenize
 from io import BytesIO
 import importlib
+
+# CRITICAL FIX: Ensure Pyodide checks the current working directory for folders
+if '.' not in sys.path:
+    sys.path.append('.')
 
 class tamilppCompiler:
     def __init__(self, lang="tamil"):
@@ -8,7 +13,9 @@ class tamilppCompiler:
         try:
             module = importlib.import_module(f"dictionaries.{self.lang}_dic")
             self.translation_map = module.dictionary
-        except Exception:
+        except Exception as e:
+            # CRITICAL FIX: Print the exact error to the terminal so we aren't guessing
+            print(f"\033[31m⚠️ Dictionary Load Error for '{lang}': {e}\033[0m")
             self.translation_map = {}
 
     def translate(self, code):
