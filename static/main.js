@@ -155,27 +155,34 @@ ${compilerPythonCode}
 initEngine();
 
 // 5. Execute User Code
+// 5. Execute User Code
 async function runCode() {
     if (!isEngineReady) return;
     
     const code = editor.getValue();
     term.writeln('\x1b[33m--- Running ---\x1b[0m');
     
+    // பயனர் எழுதிய தமிழ் குறியீட்டை Pyodide-க்கு அனுப்புகிறோம்
     pyodide.globals.set("user_code", code);
 
     try {
-        await pyodide.runPythonAsync(`
-try:
-    comp = TamilCompiler()
-    python_code = comp.translate(user_code)
-    
-    exec_globals = {"__builtins__": __builtins__}
-    exec(f"async def __async_exec():\\n" + "\\n".join(f"    {line}" for line in python_code.split("\\n")), exec_globals)
-    await exec_globals["__async_exec"]()
-except Exception as e:
-    print(f"\\033[31mRuntime Error: {e}\\033[0m")
+        // படி 1 (STEP 1): தமிழ் குறியீட்டை முழுவதுமாக Python குறியீடாக மாற்றுதல்
+        const compiled_python = await pyodide.runPythonAsync(`
+comp = TamilCompiler()
+translated_code = comp.translate(user_code)
+translated_code # இந்த மாறிய குறியீட்டை JavaScript-க்கு திரும்ப அனுப்புகிறோம்
         `);
+
+        // (உறுதி செய்வதற்காக) மாறிய பைதான் குறியீட்டை Console-ல் காட்டுகிறோம்
+        console.log("==== முழுமையாக மாற்றப்பட்ட Python குறியீடு ====\n" + compiled_python);
+
+        // படி 2 (STEP 2): முழுமையாக மாற்றப்பட்ட Python குறியீட்டை Pyodide-ல் இயக்குதல்
+        // குறிப்பு: Pyodide நேரடியாக top-level 'await' ஐ ஆதரிப்பதால், 
+        // எவ்வித கூடுதல் wrapper-களும் இல்லாமல் குறியீடு சீராக இயங்கும்.
+        await pyodide.runPythonAsync(compiled_python);
+
     } catch (err) {
+        // பிழைகள் ஏதேனும் இருந்தால் சிவப்பு நிறத்தில் காட்டவும்
         term.writeln(`\x1b[31m${err}\x1b[0m`);
     }
     
