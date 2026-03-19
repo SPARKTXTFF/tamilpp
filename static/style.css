@@ -113,3 +113,44 @@ select {
     white-space: pre-wrap;
     overflow-y: auto;
 }
+/* =========================================================
+   CUSTOM NATIVE TERMINAL
+   ========================================================= */
+.custom-terminal {
+    background-color: #000000;
+    padding: 10px;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 15px;
+    cursor: text;
+}
+
+#term-output {
+    white-space: pre-wrap; /* Preserves Python's newlines and spaces */
+    word-wrap: break-word;
+}
+
+#term-input-line {
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+}
+
+#term-prompt {
+    color: #9ece6a;
+    white-space: pre-wrap;
+}
+
+#term-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #ffffff; /* User types in white */
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 15px;
+    outline: none;
+    padding: 0;
+    margin-left: 5px;
+}
