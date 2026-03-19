@@ -1,41 +1,64 @@
-/* Base Reset */
+/* =========================================================
+   BASE RESET & VARIABLES
+   ========================================================= */
 body, html {
     margin: 0;
     padding: 0;
-    height: 100vh;
+    height: 100vh; /* Viewport height */
+    width: 100vw;
     font-family: 'Segoe UI', Tahoma, sans-serif;
     background-color: #1a1b26; /* Deep dark background */
     color: #a9b1d6;
-    overflow: hidden; /* Prevent full page scroll */
+    overflow: hidden; /* Prevent full page scrolling */
 }
 
-/* Split Screen Container */
+/* =========================================================
+   LAYOUT (Desktop First)
+   ========================================================= */
 .ide-container {
     display: flex;
-    height: 100vh;
-    width: 100vw;
+    flex-direction: row; /* Side-by-side on desktop */
+    height: 100%;
+    width: 100%;
 }
 
-/* Individual Panels */
 .panel {
-    flex: 1; /* Both panels take up 50% */
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Prevents flex children from overflowing */
+}
+
+.editor-panel {
+    border-right: 2px solid #16161e; 
+}
+
+.editor-wrapper, .output-wrapper {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
 
-.editor-panel {
-    border-right: 2px solid #16161e; /* Divider line */
-}
-
-/* Top Toolbar */
+/* =========================================================
+   TOOLBARS & CONTROLS
+   ========================================================= */
 .toolbar {
-    height: 45px;
+    min-height: 45px;
     background-color: #24283b;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;
+    padding: 5px 15px;
     border-bottom: 1px solid #16161e;
+}
+
+h1 {
+    margin: 0;
+    font-size: 20px;
+    color: #9ece6a;
+    white-space: nowrap;
 }
 
 .tab {
@@ -47,7 +70,6 @@ body, html {
     border-radius: 4px;
 }
 
-/* Buttons and Controls */
 .controls {
     display: flex;
     gap: 10px;
@@ -61,6 +83,7 @@ select {
     padding: 6px 10px;
     border-radius: 4px;
     outline: none;
+    font-size: 14px;
 }
 
 .action-btn {
@@ -71,55 +94,33 @@ select {
     cursor: pointer;
     color: white;
     transition: background-color 0.2s;
+    font-size: 14px;
+    white-space: nowrap;
 }
 
-.run-btn { background-color: #0d6efd; } /* Bright Blue Run Button */
-.run-btn:hover { background-color: #0b5ed7; }
-
-.download-btn { background-color: #414868; }
-.download-btn:hover { background-color: #545c7e; }
+.run-btn { background-color: #414868; }
+.run-btn:hover { filter: brightness(1.2); }
 
 .clear-btn { background-color: transparent; border: 1px solid #414868; color: #a9b1d6; }
 .clear-btn:hover { background-color: #414868; color: white; }
 
-/* Wrappers for Editor and Output to fill remaining space */
-.editor-wrapper, .output-wrapper {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-}
-
-/* CodeMirror Overrides to fill container */
+/* =========================================================
+   EDITOR OVERRIDES (CodeMirror)
+   ========================================================= */
 .CodeMirror {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    flex: 1;
     height: 100% !important;
     font-size: 15px;
     font-family: 'Consolas', 'Courier New', monospace;
 }
 
-/* Terminal Output Area */
-#output {
-    margin: 0;
-    padding: 15px;
-    height: 100%;
-    box-sizing: border-box;
-    font-family: 'Consolas', 'Courier New', monospace;
-    font-size: 15px;
-    color: #9ece6a; /* Terminal green text */
-    white-space: pre-wrap;
-    overflow-y: auto;
-}
 /* =========================================================
    CUSTOM NATIVE TERMINAL
    ========================================================= */
 .custom-terminal {
     background-color: #000000;
     padding: 10px;
-    height: 100%;
+    flex: 1;
     box-sizing: border-box;
     overflow-y: auto;
     font-family: 'Consolas', 'Courier New', monospace;
@@ -128,7 +129,7 @@ select {
 }
 
 #term-output {
-    white-space: pre-wrap; /* Preserves Python's newlines and spaces */
+    white-space: pre-wrap;
     word-wrap: break-word;
 }
 
@@ -147,10 +148,51 @@ select {
     flex: 1;
     background: transparent;
     border: none;
-    color: #ffffff; /* User types in white */
+    color: #ffffff;
     font-family: 'Consolas', 'Courier New', monospace;
     font-size: 15px;
     outline: none;
     padding: 0;
     margin-left: 5px;
+}
+
+/* =========================================================
+   📱 MOBILE RESPONSIVE LAYOUT (Screens smaller than 800px)
+   ========================================================= */
+@media screen and (max-width: 800px) {
+    .ide-container {
+        flex-direction: column; /* Stack editor on top of terminal */
+    }
+
+    .editor-panel {
+        flex: 1; /* Editor takes up flexible space */
+        min-height: 40vh; /* Ensures it doesn't disappear when keyboard opens */
+        border-right: none;
+        border-bottom: 2px solid #16161e;
+    }
+
+    .output-panel {
+        flex: 1; /* Terminal takes remaining space */
+        min-height: 30vh;
+    }
+
+    /* Shrink toolbars to fit mobile screens */
+    .toolbar {
+        padding: 5px 10px;
+        min-height: 40px;
+    }
+
+    h1 {
+        font-size: 16px; /* Smaller title */
+    }
+
+    .action-btn, select, .tab {
+        padding: 6px 10px;
+        font-size: 13px; /* Smaller buttons to fit side-by-side */
+    }
+
+    /* Hide the text "Docs" and "Tamil/Tanglish" to save space, keep icons if applicable */
+    .hide-on-mobile {
+        display: none !important;
+    }
 }
