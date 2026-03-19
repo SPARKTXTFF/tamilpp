@@ -4,56 +4,75 @@ const editor = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
 });
 setTimeout(() => editor.refresh(), 100);
 
-// 2. Initialize XTerm.js Terminal
-const term = new Terminal({
-    theme: { background: '#000000', foreground: '#9ece6a', cursor: '#ffffff' },
-    fontFamily: '"Consolas", monospace', fontSize: 15, cursorBlink: true
-});
-term.open(document.getElementById('terminal-container'));
-term.writeln('Initializing Pyodide WebAssembly Engine...');
+// 2. Custom Terminal DOM Elements
+const termOutput = document.getElementById('term-output');
+const termInputLine = document.getElementById('term-input-line');
+const termPrompt = document.getElementById('term-prompt');
+const termInput = document.getElementById('term-input');
+const terminalContainer = document.getElementById('terminal-container');
 
-let pyodide;
+// Helper to write text to the terminal
+function writeTerminal(text, color = '#9ece6a') {
+    const span = document.createElement('span');
+    span.style.color = color;
+    span.innerText = text + '\n';
+    termOutput.appendChild(span);
+    terminalContainer.scrollTop = terminalContainer.scrollHeight; // Auto-scroll to bottom
+}
+
+// Keep focus on the input box when clicking anywhere in the terminal
+function focusTerminal() {
+    if (termInputLine.style.display !== 'none') {
+        termInput.focus();
+    }
+}
+
 let isEngineReady = false;
 let terminalInputResolver = null;
 
-// 3. Handle Terminal Keystrokes for Input
-term.onData(e => {
-    if (terminalInputResolver !== null) {
-        if (e === '\r') { 
-            term.write('\r\n');
-            const inputStr = terminalInputResolver.buffer;
-            const resolveFunc = terminalInputResolver.resolve;
-            terminalInputResolver = null; 
-            resolveFunc(inputStr); 
-        } else if (e === '\u007F') { 
-            if (terminalInputResolver.buffer.length > 0) {
-                terminalInputResolver.buffer = terminalInputResolver.buffer.slice(0, -1);
-                term.write('\b \b');
-            }
-        } else { 
-            terminalInputResolver.buffer += e;
-            term.write(e);
-        }
+// 3. Handle Interactive Input Keystrokes (The "Enter" Key)
+termInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && terminalInputResolver) {
+        const val = termInput.value;
+        
+        // Echo what the user typed onto the screen in white
+        writeTerminal(termPrompt.innerText + val, '#ffffff'); 
+        
+        termInput.value = '';
+        termInputLine.style.display = 'none';
+        
+        const resolve = terminalInputResolver;
+        terminalInputResolver = null;
+        resolve(val); // Send the text back to Python
     }
 });
 
+// Async function called by Pyodide to wait for user typing
 async function js_input(prompt_text) {
-    term.write(prompt_text);
+    termPrompt.innerText = prompt_text;
+    termInputLine.style.display = 'flex';
+    termInput.focus();
+    terminalContainer.scrollTop = terminalContainer.scrollHeight;
+    
     return new Promise(resolve => {
-        terminalInputResolver = { resolve: resolve, buffer: "" };
+        terminalInputResolver = resolve;
     });
 }
 
-// 4. Load the Execution Engine (NO COMPILER LOGIC HERE ANYMORE!)
+// 4. Load the WebAssembly Execution Engine
+let pyodide;
 async function initEngine() {
     try {
+        writeTerminal('Initializing Pyodide WebAssembly Engine...', '#a9b1d6');
+        
         pyodide = await loadPyodide({
-            stdout: (text) => term.writeln(text),
-            stderr: (text) => term.writeln(`\x1b[31m${text}\x1b[0m`)
+            stdout: (text) => writeTerminal(text, '#9ece6a'), // Standard prints in Green
+            stderr: (text) => writeTerminal(text, '#f7768e')  // Errors in Red
         });
 
         pyodide.globals.set("js_input", js_input);
         
+        // Connect Python's input() to our HTML input box
         await pyodide.runPythonAsync(`
 import builtins
 async def async_input(prompt=""):
@@ -61,7 +80,7 @@ async def async_input(prompt=""):
 builtins.input = async_input
         `);
 
-        term.writeln('\x1b[32m✅ Execution Engine Ready!\x1b[0m\r\n');
+        writeTerminal('✅ Execution Engine Ready!\n', '#9ece6a');
         
         const runBtn = document.getElementById('runBtn');
         runBtn.innerText = "▶ Run Code";
@@ -69,24 +88,23 @@ builtins.input = async_input
         isEngineReady = true;
 
     } catch (err) {
-        term.writeln(`\x1b[31m❌ Failed to load engine: ${err}\x1b[0m`);
+        writeTerminal(`❌ Failed to load engine: ${err}`, '#f7768e');
     }
 }
 
 initEngine();
 
-// 5. Execute User Code (Fetch from API, Run in Pyodide)
+// 5. Compile and Execute User Code
 async function runCode() {
     if (!isEngineReady) return;
     
     const code = editor.getValue();
     const lang = document.getElementById("langSelect") ? document.getElementById("langSelect").value : "tamil";
     
-    term.writeln('\x1b[33m--- Compiling --- \x1b[0m');
+    writeTerminal('--- Compiling ---', '#e0af68');
 
     try {
-        // STEP 1: Ask App 1 (The API) to translate the code
-        // ⚠️ REPLACE THIS URL WITH YOUR ACTUAL API VERCEL URL
+        // ⚠️ REPLACE THIS WITH YOUR BACKEND COMPILER API URL 
         const apiUrl = "https://tamilpp-compiler.vercel.app/api/compile"; 
         
         const response = await fetch(apiUrl, {
@@ -98,25 +116,24 @@ async function runCode() {
         const data = await response.json();
 
         if (!data.success) {
-            term.writeln(`\x1b[31mCompiler Error: ${data.error}\x1b[0m`);
+            writeTerminal(`Compiler Error: ${data.error}`, '#f7768e');
             return;
         }
 
         const compiled_python = data.python_code;
-        console.log("==== Translated Python ====\n" + compiled_python);
+        writeTerminal('--- Running ---', '#e0af68');
 
-        term.writeln('\x1b[33m--- Running ---\x1b[0m');
-
-        // STEP 2: Give the translated pure Python to App 2 (Pyodide)
+        // Execute natively in Pyodide
         await pyodide.runPythonAsync(compiled_python);
 
     } catch (err) {
-        term.writeln(`\x1b[31m${err}\x1b[0m`);
+        writeTerminal(`${err}`, '#f7768e');
     }
     
-    term.writeln('\x1b[33m--- Finished ---\x1b[0m\r\n');
+    writeTerminal('--- Finished ---\n', '#e0af68');
 }
 
 function clearTerminal() {
-    term.clear();
+    termOutput.innerHTML = '';
+    termInputLine.style.display = 'none';
 }
