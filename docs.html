@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TamilPP Documentation</title>
+    <style>
+        /* Dracula Theme Colors & Base Setup */
+        :root {
+            --bg: #1a1b26;
+            --bg-panel: #24283b;
+            --fg: #a9b1d6;
+            --keyword: #f7768e;
+            --string: #9ece6a;
+            --func: #7aa2f7;
+            --comment: #565f89;
+            --border: #414868;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: var(--bg-panel);
+            padding: 15px 30px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+        }
+
+        nav h1 {
+            margin: 0;
+            color: var(--string);
+            font-size: 24px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            background-color: var(--func);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        nav a:hover {
+            filter: brightness(1.1);
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h2 { color: var(--func); border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-top: 40px;}
+        h3 { color: var(--fg); margin-bottom: 10px; }
+        
+        /* Code Blocks */
+        pre {
+            background-color: var(--bg-panel);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 15px;
+        }
+
+        .kw { color: var(--keyword); font-weight: bold; } /* Keywords */
+        .str { color: var(--string); } /* Strings */
+        .fn { color: var(--func); } /* Functions */
+        .com { color: var(--comment); font-style: italic; } /* Comments */
+
+        /* Layout Grid for Side-by-Side Code */
+        .code-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .code-grid { grid-template-columns: 1fr; }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 10px;
+            text-align: left;
+        }
+        th { background-color: var(--bg-panel); color: var(--func); }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <h1>📖 TamilPP Docs</h1>
+        <a href="/">⬅ Back to IDE</a>
+    </nav>
+
+    <div class="container">
+        <p>Welcome to the official documentation for <strong>TamilPP</strong>! This language allows you to write Python logic using native Tamil words or Tanglish (English-typed Tamil). Below are the core concepts and examples.</p>
+
+        <h2>1. உள்ளீடு & வெளியீடு (Input & Output)</h2>
+        <p>Use these keywords to print text to the screen and ask the user for information.</p>
+        <table>
+            <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
+            <tr><td>பதி / காட்டு / சொல்லு</td><td>pathi / padi</td><td>print</td></tr>
+            <tr><td>உள்ளிடு</td><td>ullidu</td><td>input</td></tr>
+        </table>
+        <div class="code-grid">
+            <div>
+                <h3>Tamil Example</h3>
+<pre>பெயர் = <span class="fn">உள்ளிடு</span>(<span class="str">"உங்கள் பெயர்: "</span>)
+<span class="fn">பதி</span>(<span class="str">"வணக்கம்"</span>, பெயர்)</pre>
+            </div>
+            <div>
+                <h3>Tanglish Example</h3>
+<pre>name = <span class="fn">ullidu</span>(<span class="str">"Peyar: "</span>)
+<span class="fn">padi</span>(<span class="str">"Vanakkam"</span>, name)</pre>
+            </div>
+        </div>
+
+        <h2>2. நிபந்தனைகள் (Conditionals)</h2>
+        <p>Used to make decisions in your code based on true or false conditions.</p>
+        <table>
+            <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
+            <tr><td>எனில்</td><td>enil</td><td>if</td></tr>
+            <tr><td>ஆனால்</td><td>aanaal</td><td>elif</td></tr>
+            <tr><td>இல்லை</td><td>illai</td><td>else</td></tr>
+        </table>
+        <div class="code-grid">
+            <div>
+                <h3>Tamil Example</h3>
+<pre>மதிப்பெண் = 85
+
+<span class="kw">எனில்</span> மதிப்பெண் > 80:
+    <span class="fn">பதி</span>(<span class="str">"சிறப்பு!"</span>)
+<span class="kw">ஆனால்</span> மதிப்பெண் > 35:
+    <span class="fn">பதி</span>(<span class="str">"தேர்ச்சி"</span>)
+<span class="kw">இல்லை</span>:
+    <span class="fn">பதி</span>(<span class="str">"தோல்வி"</span>)</pre>
+            </div>
+            <div>
+                <h3>Tanglish Example</h3>
+<pre>mark = 85
+
+<span class="kw">enil</span> mark > 80:
+    <span class="fn">padi</span>(<span class="str">"Super!"</span>)
+<span class="kw">aanaal</span> mark > 35:
+    <span class="fn">padi</span>(<span class="str">"Pass"</span>)
+<span class="kw">illai</span>:
+    <span class="fn">padi</span>(<span class="str">"Fail"</span>)</pre>
+            </div>
+        </div>
+
+        <h2>3. சுழல்கள் (Loops & Flow Control)</h2>
+        <p>Used to repeat actions multiple times.</p>
+        <table>
+            <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
+            <tr><td>சுற்று</td><td>sutru</td><td>for</td></tr>
+            <tr><td>வரை</td><td>varai</td><td>while</td></tr>
+            <tr><td>நிறுத்து</td><td>niruthu / stop</td><td>break</td></tr>
+            <tr><td>தொடர்</td><td>thodar</td><td>continue</td></tr>
+        </table>
+        <div class="code-grid">
+            <div>
+                <h3>Tamil (For Loop)</h3>
+<pre><span class="com"># பட்டியலை சுழற்றுதல்</span>
+<span class="kw">சுற்று</span> எண் <span class="kw">இல்</span> [1, 2, 3]:
+    <span class="fn">பதி</span>(எண்)</pre>
+            </div>
+            <div>
+                <h3>Tanglish (While Loop)</h3>
+<pre><span class="com"># 5 வரும் வரை ஓடும்</span>
+x = 0
+<span class="kw">varai</span> x < 5:
+    <span class="kw">enil</span> x == 3:
+        <span class="kw">niruthu</span>
+    <span class="fn">padi</span>(x)
+    x = x + 1</pre>
+            </div>
+        </div>
+
+        <h2>4. தருக்க வார்த்தைகள் (Logical Operators & Booleans)</h2>
+        <p>Used to combine multiple conditions.</p>
+        <table>
+            <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
+            <tr><td>மற்றும் / அல்லது / இல்லாத</td><td>matrum / allathu</td><td>and / or / not</td></tr>
+            <tr><td>உண்மை / பொய்</td><td>unmai / poi</td><td>True / False</td></tr>
+        </table>
+        <div class="code-grid">
+            <div>
+                <h3>Tamil Example</h3>
+<pre>மழை = <span class="kw">உண்மை</span>
+குடை = <span class="kw">உண்மை</span>
+
+<span class="kw">எனில்</span> மழை <span class="kw">மற்றும்</span> குடை:
+    <span class="fn">பதி</span>(<span class="str">"பாதுகாப்பான பயணம்"</span>)</pre>
+            </div>
+            <div>
+                <h3>Tanglish Example</h3>
+<pre>mazhai = <span class="kw">unmai</span>
+kudai = <span class="kw">unmai</span>
+
+<span class="kw">enil</span> mazhai <span class="kw">matrum</span> kudai:
+    <span class="fn">padi</span>(<span class="str">"Safe journey"</span>)</pre>
+            </div>
+        </div>
+
+        <h2>5. செயல்பாடுகள் (Functions)</h2>
+        <p>Used to create reusable blocks of code.</p>
+        <table>
+            <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
+            <tr><td>செயல்</td><td>seyal</td><td>def</td></tr>
+            <tr><td>திருப்பு</td><td>thiruppu</td><td>return</td></tr>
+        </table>
+        <div class="code-grid">
+            <div>
+                <h3>Tamil Example</h3>
+<pre><span class="kw">செயல்</span> பெருக்கு(அ, ஆ):
+    விடை = அ * ஆ
+    <span class="kw">திருப்பு</span> விடை
+
+<span class="fn">பதி</span>(பெருக்கு(5, 5)) <span class="com"># 25</span></pre>
+            </div>
+            <div>
+                <h3>Tanglish Example</h3>
+<pre><span class="kw">seyal</span> multiply(a, b):
+    ans = a * b
+    <span class="kw">thiruppu</span> ans
+
+<span class="fn">padi</span>(multiply(5, 5)) <span class="com"># 25</span></pre>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
