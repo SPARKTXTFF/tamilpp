@@ -44,84 +44,7 @@ async function js_input(prompt_text) {
     });
 }
 
-// =========================================================
-// 🧠 THE NATIVE PYTHON COMPILER 
-// =========================================================
-const compilerPythonCode = `
-import tokenize
-from io import BytesIO
-import re
-import unicodedata
-
-class TamilCompiler:
-    def __init__(self):
-        raw_dict = {
-            'எனில்': 'if', 'if': 'if',
-            'ஆனால்': 'elif', 'elif': 'elif',
-            'இல்லை': 'else', 'else': 'else',
-            'சுற்று': 'for', 'for': 'for',
-            'வரை': 'while', 'while': 'while',
-            'இல்': 'in', 'in': 'in',
-            'நிறுத்து': 'break', 'stop': 'break',
-            'தொடர்': 'continue', 'thodar': 'continue', 'continue' : 'continue',
-            'மற்றும்': 'and', 'matrum': 'and', 'and': 'and',
-            'அல்லது': 'or', 'allathu': 'or', 'or': 'or',
-            'இல்லாத': 'not', 'illatha': 'not', 'not': 'not',
-            'உண்மை': 'True', 'true': 'True',
-            'பொய்': 'False', 'false': 'False',
-            'ஏதுமில்லை': 'None', 'none': 'None',
-            'செயல்': 'def', 'seyal': 'def', 'function': 'def', 'def': 'def',
-            'திருப்பு': 'return', 'thiruppu': 'return', 'return': 'return',
-            'பதி': 'print', 'padi': 'print', 'print': 'print',
-            'காட்டு': 'print', 'kaattu': 'print',
-            'சொல்லு': 'print', 'sollu': 'print',
-            'உள்ளிடு': 'input', 'ullidu': 'input', 'input': 'input',
-            'நீளம்': 'len', 'len': 'len',
-            'முழுஎண்': 'int', 'int': 'int',
-            'சரம்': 'str', 'str': 'str',
-            'பட்டியல்': 'list', 'list': 'list'
-        }
-        self.translation_map = {}
-        for k, v in raw_dict.items():
-            # 🔪 Kill invisible keyboard characters from dictionary keys
-            clean_k = re.sub(r'[\\u200b\\u200c\\u200d\\ufeff]', '', k)
-            self.translation_map[unicodedata.normalize('NFC', clean_k)] = v
-
-    def translate(self, code):
-        # 🔪 Kill invisible keyboard characters from user code
-        code = re.sub(r'[\\u200b\\u200c\\u200d\\ufeff]', '', code)
-        
-        # Force perfectly standard Unicode blocks
-        code = unicodedata.normalize('NFC', code)
-        
-        tokens = list(tokenize.tokenize(BytesIO(code.encode('utf-8')).readline))
-        new_tokens = []
-        
-        for token in tokens:
-            if token.string in ('அமை', 'amai', 'set'):
-                continue
-            if token.type == tokenize.NAME:
-                exact_str = token.string
-                lower_str = token.string.lower()
-                if exact_str in self.translation_map:
-                    translated = self.translation_map[exact_str]
-                elif lower_str in self.translation_map:
-                    translated = self.translation_map[lower_str]
-                else:
-                    translated = exact_str
-            else:
-                translated = token.string
-                
-            new_tokens.append(tokenize.TokenInfo(token.type, translated, token.start, token.end, token.line))
-
-        python_code = tokenize.untokenize(new_tokens).decode('utf-8')
-        
-        # Inject 'await' for the interactive terminal input
-        python_code = re.sub(r'\\binput\\s*\\(', 'await input(', python_code)
-        return python_code
-`;
-
-// 4. Load the Engine
+// 4. Load the Execution Engine (NO COMPILER LOGIC HERE ANYMORE!)
 async function initEngine() {
     try {
         pyodide = await loadPyodide({
@@ -136,11 +59,9 @@ import builtins
 async def async_input(prompt=""):
     return await js_input(prompt)
 builtins.input = async_input
-
-${compilerPythonCode}
         `);
 
-        term.writeln('\x1b[32m✅ Engine Ready! You can now run code.\x1b[0m\r\n');
+        term.writeln('\x1b[32m✅ Execution Engine Ready!\x1b[0m\r\n');
         
         const runBtn = document.getElementById('runBtn');
         runBtn.innerText = "▶ Run Code";
@@ -154,35 +75,42 @@ ${compilerPythonCode}
 
 initEngine();
 
-// 5. Execute User Code
-// 5. Execute User Code
+// 5. Execute User Code (Fetch from API, Run in Pyodide)
 async function runCode() {
     if (!isEngineReady) return;
     
     const code = editor.getValue();
-    term.writeln('\x1b[33m--- Running ---\x1b[0m');
+    const lang = document.getElementById("langSelect") ? document.getElementById("langSelect").value : "tamil";
     
-    // பயனர் எழுதிய தமிழ் குறியீட்டை Pyodide-க்கு அனுப்புகிறோம்
-    pyodide.globals.set("user_code", code);
+    term.writeln('\x1b[33m--- Compiling --- \x1b[0m');
 
     try {
-        // படி 1 (STEP 1): தமிழ் குறியீட்டை முழுவதுமாக Python குறியீடாக மாற்றுதல்
-        const compiled_python = await pyodide.runPythonAsync(`
-comp = TamilCompiler()
-translated_code = comp.translate(user_code)
-translated_code # இந்த மாறிய குறியீட்டை JavaScript-க்கு திரும்ப அனுப்புகிறோம்
-        `);
+        // STEP 1: Ask App 1 (The API) to translate the code
+        // ⚠️ REPLACE THIS URL WITH YOUR ACTUAL API VERCEL URL
+        const apiUrl = "https://tamilpp-compiler.vercel.app/api/compile"; 
+        
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: code, lang: lang })
+        });
 
-        // (உறுதி செய்வதற்காக) மாறிய பைதான் குறியீட்டை Console-ல் காட்டுகிறோம்
-        console.log("==== முழுமையாக மாற்றப்பட்ட Python குறியீடு ====\n" + compiled_python);
+        const data = await response.json();
 
-        // படி 2 (STEP 2): முழுமையாக மாற்றப்பட்ட Python குறியீட்டை Pyodide-ல் இயக்குதல்
-        // குறிப்பு: Pyodide நேரடியாக top-level 'await' ஐ ஆதரிப்பதால், 
-        // எவ்வித கூடுதல் wrapper-களும் இல்லாமல் குறியீடு சீராக இயங்கும்.
+        if (!data.success) {
+            term.writeln(`\x1b[31mCompiler Error: ${data.error}\x1b[0m`);
+            return;
+        }
+
+        const compiled_python = data.python_code;
+        console.log("==== Translated Python ====\n" + compiled_python);
+
+        term.writeln('\x1b[33m--- Running ---\x1b[0m');
+
+        // STEP 2: Give the translated pure Python to App 2 (Pyodide)
         await pyodide.runPythonAsync(compiled_python);
 
     } catch (err) {
-        // பிழைகள் ஏதேனும் இருந்தால் சிவப்பு நிறத்தில் காட்டவும்
         term.writeln(`\x1b[31m${err}\x1b[0m`);
     }
     
