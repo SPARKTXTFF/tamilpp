@@ -1,2 +1,2 @@
 USAGES 👇
-[](https://tamilpp.vercel.app/docs)
+[Documentation URL](https://tamilpp.vercel.app/docs)
