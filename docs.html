@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ta">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +16,7 @@
             --func: #7aa2f7;
             --comment: #565f89;
             --border: #414868;
+            --explanation-bg: #1f2335;
         }
 
         body {
@@ -78,6 +79,7 @@
             border: 1px solid var(--border);
             font-family: 'Consolas', 'Courier New', monospace;
             font-size: 15px;
+            margin-bottom: 0;
         }
 
         .kw { color: var(--keyword); font-weight: bold; } /* Keywords */
@@ -107,6 +109,19 @@
             text-align: left;
         }
         th { background-color: var(--bg-panel); color: var(--func); }
+
+        /* Explanation Box Styling */
+        .explanation {
+            background-color: var(--explanation-bg);
+            border-left: 4px solid var(--func);
+            padding: 12px 15px;
+            margin-top: 10px;
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+        }
+        .explanation strong {
+            color: var(--keyword);
+        }
     </style>
 </head>
 <body>
@@ -117,13 +132,13 @@
     </nav>
 
     <div class="container">
-        <p>Welcome to the official documentation for <strong>TamilPP</strong>! This language allows you to write Python logic using native Tamil words or Tanglish (English-typed Tamil). Below are the core concepts and examples.</p>
+        <p><strong>TamilPP</strong>-இன் அதிகாரப்பூர்வ ஆவணங்களுக்கு வரவேற்கிறோம்! பைதான் (Python) நிரலாக்கத்தை நமது தாய்மொழியான தமிழிலோ அல்லது ஆங்கிலம் கலந்த தமிழிலோ (Tanglish) எழுத இது உங்களை அனுமதிக்கிறது. புதிய நிரலாளர்கள் எளிதாகப் புரிந்துகொள்ளும் வகையில் விளக்கங்கள் கீழே கொடுக்கப்பட்டுள்ளன.</p>
 
         <h2>1. உள்ளீடு & வெளியீடு (Input & Output)</h2>
-        <p>Use these keywords to print text to the screen and ask the user for information.</p>
+        <p>பயனரிடமிருந்து தகவலைப் பெறவும், திரையில் காட்டவும் இந்த வார்த்தைகள் பயன்படுகின்றன.</p>
         <table>
             <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
-            <tr><td>பதி / காட்டு / சொல்லு</td><td>pathi / padi</td><td>print</td></tr>
+            <tr><td>பதி</td><td>pathi / padi</td><td>print</td></tr>
             <tr><td>உள்ளிடு</td><td>ullidu</td><td>input</td></tr>
         </table>
         <div class="code-grid">
@@ -131,16 +146,22 @@
                 <h3>Tamil Example</h3>
 <pre>பெயர் = <span class="fn">உள்ளிடு</span>(<span class="str">"உங்கள் பெயர்: "</span>)
 <span class="fn">பதி</span>(<span class="str">"வணக்கம்"</span>, பெயர்)</pre>
+                <div class="explanation">
+                    <strong>விளக்கம்:</strong> <code>உள்ளிடு</code> (input) பயனரிடமிருந்து தகவலைப் பெறுகிறது. <code>பதி</code> (print) விடையைத் திரையில் காட்டுகிறது.
+                </div>
             </div>
             <div>
                 <h3>Tanglish Example</h3>
 <pre>name = <span class="fn">ullidu</span>(<span class="str">"Peyar: "</span>)
 <span class="fn">padi</span>(<span class="str">"Vanakkam"</span>, name)</pre>
+                <div class="explanation">
+                    <strong>Explanation:</strong> <code>ullidu</code> gets input from the user. <code>padi</code> displays the result on the screen.
+                </div>
             </div>
         </div>
 
         <h2>2. நிபந்தனைகள் (Conditionals)</h2>
-        <p>Used to make decisions in your code based on true or false conditions.</p>
+        <p>ஒரு குறிப்பிட்ட நிபந்தனை உண்மையா அல்லது பொய்யா என்பதைப் பொறுத்து முடிவுகளை எடுக்க இவை உதவுகின்றன.</p>
         <table>
             <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
             <tr><td>எனில்</td><td>enil</td><td>if</td></tr>
@@ -158,6 +179,9 @@
     <span class="fn">பதி</span>(<span class="str">"தேர்ச்சி"</span>)
 <span class="kw">இல்லை</span>:
     <span class="fn">பதி</span>(<span class="str">"தோல்வி"</span>)</pre>
+                <div class="explanation">
+                    <strong>விளக்கம்:</strong> <code>எனில்</code> (if) முதல் நிபந்தனையைச் சரிபார்க்கும். அது தவறென்றால் <code>ஆனால்</code> (elif) அடுத்ததைச் சரிபார்க்கும். இரண்டுமே தவறென்றால் <code>இல்லை</code> (else) வேலை செய்யும்.
+                </div>
             </div>
             <div>
                 <h3>Tanglish Example</h3>
@@ -169,24 +193,29 @@
     <span class="fn">padi</span>(<span class="str">"Pass"</span>)
 <span class="kw">illai</span>:
     <span class="fn">padi</span>(<span class="str">"Fail"</span>)</pre>
+                <div class="explanation">
+                    <strong>Explanation:</strong> <code>enil</code> checks the first condition, <code>aanaal</code> checks the next, and <code>illai</code> runs if all conditions fail.
+                </div>
             </div>
         </div>
 
-        <h2>3. சுழல்கள் (Loops & Flow Control)</h2>
-        <p>Used to repeat actions multiple times.</p>
+        <h2>3. சுழல்கள் மற்றும் கட்டுப்பாடு (Loops & Flow Control)</h2>
+        <p>ஒரு குறிப்பிட்ட செயலைத் திரும்பத் திரும்பச் செய்ய சுழல்கள் பயன்படுகின்றன.</p>
         <table>
             <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
-            <tr><td>சுற்று</td><td>sutru</td><td>for</td></tr>
+            <tr><td>சுற்று / வீச்சு / இல்</td><td>sutru / veechu / il</td><td>for / range / in</td></tr>
             <tr><td>வரை</td><td>varai</td><td>while</td></tr>
-            <tr><td>நிறுத்து</td><td>niruthu / stop</td><td>break</td></tr>
-            <tr><td>தொடர்</td><td>thodar</td><td>continue</td></tr>
+            <tr><td>நிறுத்து / தொடர்</td><td>niruthu / thodar</td><td>break / continue</td></tr>
         </table>
         <div class="code-grid">
             <div>
                 <h3>Tamil (For Loop)</h3>
-<pre><span class="com"># பட்டியலை சுழற்றுதல்</span>
-<span class="kw">சுற்று</span> எண் <span class="kw">இல்</span> [1, 2, 3]:
+<pre><span class="com"># 3 முறை சுழலும்</span>
+<span class="kw">சுற்று</span> எண் <span class="kw">இல்</span> <span class="fn">வீச்சு</span>(3):
     <span class="fn">பதி</span>(எண்)</pre>
+                <div class="explanation">
+                    <strong>விளக்கம்:</strong> <code>வீச்சு</code> (range) குறிப்பிட்ட எண்கள் வரை பட்டியலை உருவாக்கும். <code>சுற்று</code> (for) மற்றும் <code>இல்</code> (in) அதனைத் திரும்பத் திரும்ப இயக்கும்.
+                </div>
             </div>
             <div>
                 <h3>Tanglish (While Loop)</h3>
@@ -197,58 +226,135 @@ x = 0
         <span class="kw">niruthu</span>
     <span class="fn">padi</span>(x)
     x = x + 1</pre>
+                <div class="explanation">
+                    <strong>Explanation:</strong> <code>varai</code> runs as long as the condition is true. <code>niruthu</code> (break) forcefully stops the loop when x is 3.
+                </div>
             </div>
         </div>
 
-        <h2>4. தருக்க வார்த்தைகள் (Logical Operators & Booleans)</h2>
-        <p>Used to combine multiple conditions.</p>
+        <h2>4. தருக்க வார்த்தைகள் (Logic & Booleans)</h2>
+        <p>பல நிபந்தனைகளை ஒன்றாக இணைக்க மற்றும் உண்மையை/பொய்யை மதிப்பிடப் பயன்படுகின்றன.</p>
         <table>
             <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
-            <tr><td>மற்றும் / அல்லது / இல்லாத</td><td>matrum / allathu</td><td>and / or / not</td></tr>
-            <tr><td>உண்மை / பொய்</td><td>unmai / poi</td><td>True / False</td></tr>
+            <tr><td>மற்றும் / அல்லது / அல்ல</td><td>matrum / allathu / alla</td><td>and / or / not</td></tr>
+            <tr><td>உண்மை / பொய் / ஏதுமில்லை</td><td>unmai / poi / ethumillai</td><td>True / False / None</td></tr>
         </table>
         <div class="code-grid">
             <div>
                 <h3>Tamil Example</h3>
 <pre>மழை = <span class="kw">உண்மை</span>
-குடை = <span class="kw">உண்மை</span>
+குடை = <span class="kw">ஏதுமில்லை</span>
 
-<span class="kw">எனில்</span> மழை <span class="kw">மற்றும்</span> குடை:
-    <span class="fn">பதி</span>(<span class="str">"பாதுகாப்பான பயணம்"</span>)</pre>
+<span class="kw">எனில்</span> மழை <span class="kw">மற்றும்</span> <span class="kw">அல்ல</span> குடை:
+    <span class="fn">பதி</span>(<span class="str">"நனைவீர்கள்!"</span>)</pre>
+                <div class="explanation">
+                    <strong>விளக்கம்:</strong> <code>உண்மை</code> (True) நடந்ததைக் குறிக்கும். <code>ஏதுமில்லை</code> (None) என்பது காலியான மதிப்பைக் குறிக்கும். <code>மற்றும்</code> (and) இரண்டையும் சரிபார்க்கும், <code>அல்ல</code> (not) எதிர்ப்பதைக் குறிக்கும்.
+                </div>
             </div>
             <div>
                 <h3>Tanglish Example</h3>
 <pre>mazhai = <span class="kw">unmai</span>
-kudai = <span class="kw">unmai</span>
+kudai = <span class="kw">ethumillai</span>
 
-<span class="kw">enil</span> mazhai <span class="kw">matrum</span> kudai:
-    <span class="fn">padi</span>(<span class="str">"Safe journey"</span>)</pre>
+<span class="kw">enil</span> mazhai <span class="kw">matrum</span> <span class="kw">alla</span> kudai:
+    <span class="fn">padi</span>(<span class="str">"Nanaiveergal!"</span>)</pre>
+                <div class="explanation">
+                    <strong>Explanation:</strong> Combine logic using <code>matrum</code> (and) / <code>alla</code> (not). <code>ethumillai</code> means an empty/None value.
+                </div>
             </div>
         </div>
 
-        <h2>5. செயல்பாடுகள் (Functions)</h2>
-        <p>Used to create reusable blocks of code.</p>
+        <h2>5. செயல்பாடுகள் & வகுப்புகள் (Functions & Classes)</h2>
+        <p>மீண்டும் பயன்படுத்தக்கூடிய குறியீடுகளையும், பொருள் சார்ந்த நிரலாக்கத்தையும் (OOP) உருவாக்க இவை உதவுகின்றன.</p>
         <table>
             <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
-            <tr><td>செயல்</td><td>seyal</td><td>def</td></tr>
-            <tr><td>திருப்பு</td><td>thiruppu</td><td>return</td></tr>
+            <tr><td>செயல் / திருப்பு</td><td>seyal / thiruppu</td><td>def / return</td></tr>
+            <tr><td>வகுப்பு</td><td>vaguppu</td><td>class</td></tr>
         </table>
         <div class="code-grid">
             <div>
                 <h3>Tamil Example</h3>
-<pre><span class="kw">செயல்</span> பெருக்கு(அ, ஆ):
-    விடை = அ * ஆ
-    <span class="kw">திருப்பு</span> விடை
+<pre><span class="kw">வகுப்பு</span> கார்:
+    <span class="kw">செயல்</span> ஓட்டு(self):
+        <span class="kw">திருப்பு</span> <span class="str">"கார் ஓடுகிறது"</span>
 
-<span class="fn">பதி</span>(பெருக்கு(5, 5)) <span class="com"># 25</span></pre>
+என்_கார் = கார்()
+<span class="fn">பதி</span>(என்_கார்.ஓட்டு())</pre>
+                <div class="explanation">
+                    <strong>விளக்கம்:</strong> <code>வகுப்பு</code> (class) மூலம் புதிய பொருள்களை உருவாக்கலாம். <code>செயல்</code> (def) ஒரு வேலையைச் செய்கிறது, <code>திருப்பு</code> (return) விடையை திருப்பி அனுப்புகிறது.
+                </div>
             </div>
             <div>
                 <h3>Tanglish Example</h3>
-<pre><span class="kw">seyal</span> multiply(a, b):
-    ans = a * b
-    <span class="kw">thiruppu</span> ans
+<pre><span class="kw">vaguppu</span> Car:
+    <span class="kw">seyal</span> ottu(self):
+        <span class="kw">thiruppu</span> <span class="str">"Car oduthu"</span>
 
-<span class="fn">padi</span>(multiply(5, 5)) <span class="com"># 25</span></pre>
+my_car = Car()
+<span class="fn">padi</span>(my_car.ottu())</pre>
+                <div class="explanation">
+                    <strong>Explanation:</strong> Use <code>vaguppu</code> to create objects. <code>seyal</code> defines a function, and <code>thiruppu</code> returns the output.
+                </div>
+            </div>
+        </div>
+
+        <h2>6. தரவு வகைகள் & செயல்பாடுகள் (Data Types & Built-ins)</h2>
+        <p>எண்கள், எழுத்துகள் மற்றும் அவற்றின் நீளத்தைக் கண்டறியப் பயன்படும் வார்த்தைகள்.</p>
+        <table>
+            <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
+            <tr><td>முழுஎண் / தசமம்</td><td>muzhuen / thasamam</td><td>int / float</td></tr>
+            <tr><td>சரம் / பட்டியல் / அகராதி</td><td>saram / pattiyal / agaraathi</td><td>str / list / dict</td></tr>
+            <tr><td>நீளம்</td><td>neelam</td><td>len</td></tr>
+        </table>
+        <div class="code-grid">
+            <div>
+                <h3>Tamil Example</h3>
+<pre>எண் = <span class="fn">முழுஎண்</span>(10)
+பெயர்கள் = <span class="fn">பட்டியல்</span>([<span class="str">"கமல்"</span>, <span class="str">"ரஜினி"</span>])
+
+<span class="fn">பதி</span>(<span class="str">"பட்டியலின் நீளம்:"</span>, <span class="fn">நீளம்</span>(பெயர்கள்))</pre>
+                <div class="explanation">
+                    <strong>விளக்கம்:</strong> <code>முழுஎண்</code>, <code>சரம்</code>, <code>பட்டியல்</code> ஆகியவை தரவுகளின் வகைகளாகும். <code>நீளம்</code> (len) என்பது பட்டியலில் உள்ள உறுப்புகளின் எண்ணிக்கையைத் தரும் (இங்கே விடை 2).
+                </div>
+            </div>
+            <div>
+                <h3>Tanglish Example</h3>
+<pre>num = <span class="fn">muzhuen</span>(10)
+names = <span class="fn">pattiyal</span>([<span class="str">"Kamal"</span>, <span class="str">"Rajini"</span>])
+
+<span class="fn">padi</span>(<span class="str">"Length is:"</span>, <span class="fn">neelam</span>(names))</pre>
+                <div class="explanation">
+                    <strong>Explanation:</strong> Convert types using <code>muzhuen</code> (int) or <code>pattiyal</code> (list). Use <code>neelam</code> (len) to find the size of an object.
+                </div>
+            </div>
+        </div>
+
+        <h2>7. தொகுதிகள் (Modules & Imports)</h2>
+        <p>வெளிப்புற குறியீடுகளை (Libraries) உங்கள் கோப்பில் இணைக்க இவை பயன்படும்.</p>
+        <table>
+            <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
+            <tr><td>இறக்குமதி</td><td>irakkumathi</td><td>import</td></tr>
+        </table>
+        <div class="code-grid">
+            <div>
+                <h3>Tamil Example</h3>
+<pre><span class="kw">இறக்குமதி</span> கணிதம்
+
+விடை = கணிதம்.sqrt(16)
+<span class="fn">பதி</span>(விடை) <span class="com"># விடை 4.0</span></pre>
+                <div class="explanation">
+                    <strong>விளக்கம்:</strong> <code>இறக்குமதி</code> (import) மூலம் பைத்தானில் உள்ள பிற கோப்புகளையோ அல்லது லைப்ரரிகளையோ நம் நிரலுக்குள் கொண்டுவரலாம்.
+                </div>
+            </div>
+            <div>
+                <h3>Tanglish Example</h3>
+<pre><span class="kw">irakkumathi</span> math
+
+ans = math.sqrt(16)
+<span class="fn">padi</span>(ans) <span class="com"># ans 4.0</span></pre>
+                <div class="explanation">
+                    <strong>Explanation:</strong> <code>irakkumathi</code> is used to import built-in or external python modules like math, random, etc.
+                </div>
             </div>
         </div>
 
