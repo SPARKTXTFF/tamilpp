@@ -94,6 +94,10 @@
             gap: 20px;
         }
 
+        .full-width {
+            grid-template-columns: 1fr;
+        }
+
         @media (max-width: 768px) {
             .code-grid { grid-template-columns: 1fr; }
         }
@@ -134,7 +138,41 @@
     <div class="container">
         <p><strong>TamilPP</strong>-இன் அதிகாரப்பூர்வ ஆவணங்களுக்கு வரவேற்கிறோம்! பைதான் (Python) நிரலாக்கத்தை நமது தாய்மொழியான தமிழிலோ அல்லது ஆங்கிலம் கலந்த தமிழிலோ (Tanglish) எழுத இது உங்களை அனுமதிக்கிறது. புதிய நிரலாளர்கள் எளிதாகப் புரிந்துகொள்ளும் வகையில் விளக்கங்கள் கீழே கொடுக்கப்பட்டுள்ளன.</p>
 
-        <h2>1. உள்ளீடு & வெளியீடு (Input & Output)</h2>
+        <h2>0. நிறுவுதல் (Installation)</h2>
+        <p>TamilPP தொகுப்பை பைத்தானின் அதிகாரப்பூர்வ PyPI தளத்தில் இருந்து நேரடியாக உங்கள் கணினியில் நிறுவிக் கொள்ளலாம்.</p>
+        <div class="code-grid full-width">
+            <div>
+                <h3>Terminal / Command Prompt</h3>
+<pre>pip install tamilpp</pre>
+                <div class="explanation">
+                    <strong>விளக்கம்:</strong> உங்கள் கணினியின் கமாண்ட் பிராம்ப்ட்டில் (Command Prompt) அல்லது டெர்மினலில் (Terminal) இந்தக் கட்டளையை இயக்குவதன் மூலம் <code>tamilpp</code> தொகுப்பை (Package) எளிதாக நிறுவிக் கொள்ளலாம். நிறுவப்பட்ட பின், உங்கள் பைதான் திட்டங்களில் தமிழிலேயே நிரல்களை எழுதத் தொடங்கலாம்!<br><br>
+                    <strong>Explanation:</strong> Open your Terminal or Command prompt and run this command to download and install the <code>tamilpp</code> package directly from PyPI.
+                </div>
+            </div>
+        </div>
+
+        <h2>1. நிரலை இயக்குதல் & தொகுத்தல் (Running & Compiling)</h2>
+        <p>உங்கள் நிரலை எழுதி முடித்த பின், அதனை <strong>.tpp</strong> என்ற நீட்டிப்புடன் (உதாரணமாக: <code>main.tpp</code>) சேமிக்க வேண்டும். பின்னர் முனையத்தில் (Command Prompt) கீழ்க்கண்ட கட்டளைகளைப் பயன்படுத்தலாம்.</p>
+        <div class="code-grid">
+            <div>
+                <h3>நிரலை இயக்க (To Run)</h3>
+<pre>tamilpp main.tpp</pre>
+                <div class="explanation">
+                    <strong>விளக்கம்:</strong> இந்தக் கட்டளை <code>main.tpp</code> என்ற உங்கள் தமிழ் நிரலை நேரடியாக இயக்கி, அதற்கான விடையைத் திரையில் காட்டும். (<code>main.tpp</code> என்பதற்குப் பதிலாக உங்கள் கோப்பின் பெயரைக் கொடுக்கவும்).<br><br>
+                    <strong>Explanation:</strong> Use the <code>tamilpp</code> command followed by your filename to directly execute your code and see the output immediately.
+                </div>
+            </div>
+            <div>
+                <h3>பைத்தானாக மாற்ற (To Compile)</h3>
+<pre>tamilppc main.tpp</pre>
+                <div class="explanation">
+                    <strong>விளக்கம்:</strong> இது உங்கள் தமிழ் நிரலை சாதாரண பைத்தான் (Python) குறியீடாக மாற்றி (Compile), புதிய <code>.py</code> கோப்பாகச் சேமிக்கும். பைத்தான் மட்டுமே தெரிந்தவர்களுடன் உங்கள் நிரலைப் பகிர இது உதவும்.<br><br>
+                    <strong>Explanation:</strong> The <code>tamilppc</code> command compiles your Tamil code and converts it into standard Python code so it can be run anywhere.
+                </div>
+            </div>
+        </div>
+
+        <h2>2. உள்ளீடு & வெளியீடு (Input & Output)</h2>
         <p>பயனரிடமிருந்து தகவலைப் பெறவும், திரையில் காட்டவும் இந்த வார்த்தைகள் பயன்படுகின்றன.</p>
         <table>
             <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
@@ -160,7 +198,7 @@
             </div>
         </div>
 
-        <h2>2. நிபந்தனைகள் (Conditionals)</h2>
+        <h2>3. நிபந்தனைகள் (Conditionals)</h2>
         <p>ஒரு குறிப்பிட்ட நிபந்தனை உண்மையா அல்லது பொய்யா என்பதைப் பொறுத்து முடிவுகளை எடுக்க இவை உதவுகின்றன.</p>
         <table>
             <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
@@ -199,7 +237,7 @@
             </div>
         </div>
 
-        <h2>3. சுழல்கள் மற்றும் கட்டுப்பாடு (Loops & Flow Control)</h2>
+        <h2>4. சுழல்கள் மற்றும் கட்டுப்பாடு (Loops & Flow Control)</h2>
         <p>ஒரு குறிப்பிட்ட செயலைத் திரும்பத் திரும்பச் செய்ய சுழல்கள் பயன்படுகின்றன.</p>
         <table>
             <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
@@ -232,7 +270,7 @@ x = 0
             </div>
         </div>
 
-        <h2>4. தருக்க வார்த்தைகள் (Logic & Booleans)</h2>
+        <h2>5. தருக்க வார்த்தைகள் (Logic & Booleans)</h2>
         <p>பல நிபந்தனைகளை ஒன்றாக இணைக்க மற்றும் உண்மையை/பொய்யை மதிப்பிடப் பயன்படுகின்றன.</p>
         <table>
             <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
@@ -264,7 +302,7 @@ kudai = <span class="kw">ethumillai</span>
             </div>
         </div>
 
-        <h2>5. செயல்பாடுகள் & வகுப்புகள் (Functions & Classes)</h2>
+        <h2>6. செயல்பாடுகள் & வகுப்புகள் (Functions & Classes)</h2>
         <p>மீண்டும் பயன்படுத்தக்கூடிய குறியீடுகளையும், பொருள் சார்ந்த நிரலாக்கத்தையும் (OOP) உருவாக்க இவை உதவுகின்றன.</p>
         <table>
             <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
@@ -298,7 +336,7 @@ my_car = Car()
             </div>
         </div>
 
-        <h2>6. தரவு வகைகள் & செயல்பாடுகள் (Data Types & Built-ins)</h2>
+        <h2>7. தரவு வகைகள் & செயல்பாடுகள் (Data Types & Built-ins)</h2>
         <p>எண்கள், எழுத்துகள் மற்றும் அவற்றின் நீளத்தைக் கண்டறியப் பயன்படும் வார்த்தைகள்.</p>
         <table>
             <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
@@ -329,7 +367,7 @@ names = <span class="fn">pattiyal</span>([<span class="str">"Kamal"</span>, <spa
             </div>
         </div>
 
-        <h2>7. தொகுதிகள் (Modules & Imports)</h2>
+        <h2>8. தொகுதிகள் (Modules & Imports)</h2>
         <p>வெளிப்புற குறியீடுகளை (Libraries) உங்கள் கோப்பில் இணைக்க இவை பயன்படும்.</p>
         <table>
             <tr><th>Tamil</th><th>Tanglish</th><th>Python Equivalent</th></tr>
