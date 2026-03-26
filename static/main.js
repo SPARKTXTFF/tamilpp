@@ -100,8 +100,6 @@ async function runCode() {
     
     const code = editor.getValue();
     const lang = document.getElementById("langSelect") ? document.getElementById("langSelect").value : "tamil";
-    
-    writeTerminal('--- Compiling ---', '#e0af68');
 
     try {
         // ⚠️ REPLACE THIS WITH YOUR BACKEND COMPILER API URL 
@@ -121,7 +119,6 @@ async function runCode() {
         }
 
         const compiled_python = data.python_code;
-        writeTerminal('--- Running ---', '#e0af68');
 
         // Execute natively in Pyodide
         await pyodide.runPythonAsync(compiled_python);
@@ -129,8 +126,6 @@ async function runCode() {
     } catch (err) {
         writeTerminal(`${err}`, '#f7768e');
     }
-    
-    writeTerminal('--- Finished ---\n', '#e0af68');
 }
 
 function clearTerminal() {
